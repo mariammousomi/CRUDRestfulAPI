@@ -1,0 +1,283 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+   
+  
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js" integrity="sha512-7oYXeK0OxTFxndh0erL8FsjGvrl2VMDor6fVqzlLGfwOQQqTbYsGPv4ZZ15QHfSk80doyaM0ZJdvkyDcVO7KFA==" crossorigin="anonymous"></script>
+    <script src="module.js"></script>
+    <script src="controller.js"></script>
+    <script src="services.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+
+</head>
+<body style="background-color:#f7f5f8" ng-app="myApp" ng-controller="myController">
+    
+    <div class="row">
+        <div class="col-md-2 sidebar" style="background-color: darkgray;">
+<div>
+    <h2>Login</h2>
+    <form novalidate name="f1" ng-submit="Login()">
+        <div>{{Message}}</div>
+        <table ng-show="!IsLogedIn">
+            <tr>
+                <td>Username: </td>>
+                <td>
+                    <input type="email" ng-model="LoginData.UserName" class="sStudentData" ng-class="Submitted? 'ng-dirty':''" required autofocus/>
+                </td>
+            </tr>
+            <tr>
+                <td>Password: </td>>
+                <td>
+                    <input type="password" ng-model="LoginData.Password" class="sStudentData" ng-class="Submitted? 'ng-dirty':''" required autofocus/>
+                </td>
+            </tr>
+            <tr>
+                <td></td>>
+                <td>
+                    <input type="submit" value="Login"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+        </div>
+        <div class="col-md-10">
+            <button type="button" class="btn btn-primary btn-lg styled" data-toggle="modal" data-target="#myModal" ng-show="createhideAndShow" >Add New</button>
+            <div style="float: right;">
+                <input class="btn btn-secondary glyphicon glyphicon-cog styled" type="button" value="Settings"  data-toggle="modal" data-target="#settingsModal">
+                <br/>
+         
+                <div class="modal fade" id="settingsModal" role="dialog">
+                 <div class="modal-dialog">
+                     <div class="modal-content">
+                         <div style="float: right;">
+                             <input class="btn btn-dark" type="button" value="Add {{buttonValueCreate}}" ng-click="createhideAndShow = !createhideAndShow">
+                             <input class="btn btn-dark" type="button" value="Edit {{buttonValueEdit}}" ng-click="edithideAndShow = !edithideAndShow">
+                             <input class="btn btn-dark" type="button" value="View {{buttonValueView}}" ng-click="viewhideAndShow = !viewhideAndShow">
+                             <input class="btn btn-dark" type="button" value="Delete {{buttonValueDelete}}" ng-click="deletehideAndShow = !deletehideAndShow">
+                            </div>
+                            <button type="button" class="btn btn-danger styled" data-dismiss="modal">Ok</button>
+                     </div>
+                 </div>
+                 
+         
+                </div>
+         
+            </div>
+         
+             <table class="table table-striped">
+                 <thead>
+                     <tr>
+                         <th>Sl No.</th>
+                         <th>First Name</th>
+                         <th>Last Name</th>
+                         <th>Date of Birth</th>
+                         <th>Address</th>
+                         <th>Email</th>
+                         <th>Contact No</th>
+                         <th>Edit</th>
+                         <th>View</th>
+                         <th>Delete</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr ng-repeat="student in Student">
+                         <td>{{student.studentId}}</td>
+                         <td>{{student.fName}}</td>
+                         <td>{{student.lName}}</td>
+                         <td>{{student.dob | date:'dd/MM/yyyy'}}</td>
+                         <td>{{student.address}}</td>
+                         <td>{{student.email}}</td>
+                         <td>{{student.phone}}</td>
+                         <td ng-show="edithideAndShow">
+                             <button type="button" class="btn btn-warning glyphicon glyphicon-edit" data-toggle="modal" data-target="#editModal" ng-click="selectedStudent(student)">Edit</button>
+                         </td>
+                         <td ng-show="viewhideAndShow">
+                             <button type="button" class="btn btn-primary glyphicon glyphicon-view" data-toggle="modal" data-target="#viewModal" ng-click="selectedStudent(student)">View</button>
+                         </td>
+                         <td ng-show="deletehideAndShow">
+                             <button type="button" class="btn btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#deleteModal" ng-click="selectedStudent(student)">delete</button>
+                         </td>
+                     </tr>
+                 </tbody>
+                 
+                 
+             </table>
+         
+         
+             <div class="modal fade" id="myModal" role="dialog">
+                 <div class="modal-dialog">
+                     <div class="modal-content">
+                         <div class="modal-header"> 
+                             <h3 class="modal-title">Add New Student</h3>
+                             <button class="close" data-dismiss="modal">&times;</button>
+                         </div>
+                         <div class="modal-body">
+                             <form class="form-horizontal">
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">First Name</label>
+                                     <input type="text" class="form-control col-sm-8" ng-model="newStudent.fName" />
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Last Name</label>
+                                     <input type="text" class="form-control col-sm-8" ng-model="newStudent.lName" />
+                                 </div>
+                                 <div class="form-group"> 
+                                     <label class="control-label col-sm-4">Date of birth</label>
+                                     <input type="date" class="form-control col-sm-8" ng-model="newStudent.dob" />
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Address</label>
+                                     <input type="text" class="form-control col-sm-8" ng-model="newStudent.address" />
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Email Address</label>
+                                     <input type="email" class="form-control col-sm-8" ng-model="newStudent.email" />
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Contact Number</label>
+                                     <input type="tel" class="form-control col-sm-8" ng-model="newStudent.phone" />
+                                 </div>
+                                
+                                 <div class="form-group">
+                                     <div class="col-sm-offset-2 col-sm-10">
+                                         <button type="submit" class="btn btn-success" data-dismiss="modal" ng-click="addstudent()">Save</button>
+                                     </div>
+                                 </div>
+                             </form>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         
+             <div class="modal fade" id="editModal" role="dialog">
+                 <div class="modal-dialog">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <h3 class="modal-title">Update Student</h3>
+                             <button class="close" data-dismiss="modal">&times;</button>
+                         </div>
+                         <div class="modal-body">                
+                             <form class="form-horizontal">
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">First Name</label>
+                                     <input type="text" class="form-control col-sm-8" ng-model="clickedStudentData.fName" />
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Last Name</label>
+                                     <input type="text" class="form-control col-sm-8" ng-model="clickedStudentData.lName" />
+                                 </div>
+                                 <div class="form-group"> 
+                                     <label class="control-label col-sm-4">Date of birth</label>
+                                     <input type="date" class="form-control col-sm-8" ng-model="clickedStudentData.dob" />
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Address</label>
+                                     <input type="text" class="form-control col-sm-8" ng-model="clickedStudentData.address" />
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Email Address</label>
+                                     <input type="email" class="form-control col-sm-8" ng-model="clickedStudentData.email" />
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Contact Number</label>
+                                     <input type="text" class="form-control col-sm-8" ng-model="clickedStudentData.phone" />
+                                 </div>
+                                 <div class="form-group">
+                                     <div class="col-sm-offset-2 col-sm-10">
+                                         <button type="submit" class="btn btn-success" data-dismiss="modal" ng-click="updateStudent()">Update</button>
+                                     </div>
+                                 </div>                    
+                             </form>                   
+                         </div>
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         
+         
+         
+             <div class="modal fade" id="viewModal" role="dialog">
+                 <div class="modal-dialog"> 
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <h3 class="modal-title">Details Student</h3>
+                             <button class="close" data-dismiss="modal">&times;</button>
+                         </div>
+                         <div class="modal-body">                
+                             <form class="form-horizontal">
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">First Name</label>
+                                     <label class="form-control col-sm-8" ng-model="clickedStudentData.fName"></label>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Last Name</label>
+                                     <label type="text" class="form-control col-sm-8" ng-model="clickedStudentData.lName" ></label>
+                                 </div>
+                                 <div class="form-group"> 
+                                     <label class="control-label col-sm-4">Date of birth</label>
+                                     <label type="date" class="form-control col-sm-8" ng-model="clickedStudentData.dob" ></label>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Address</label>
+                                     <label type="text" class="form-control col-sm-8" ng-model="clickedStudentData.address" ></label>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Email Address</label>
+                                     <label type="email" class="form-control col-sm-8" ng-model="clickedStudentData.email" ></label>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="control-label col-sm-4">Contact Number</label>
+                                     <label type="text" class="form-control col-sm-8" ng-model="clickedStudentData.phone" ></label>
+                                 </div>                                       
+                             </form>                   
+                         </div>
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         
+         
+             <div class="modal fade" id="deleteModal" role="dialog">
+                 <div class="modal-dialog">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <h4 class="modal-title">Delete This Student</h4>
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                         </div>
+                         <div class="modal-body">
+                             <strong style="color:red;">Are you sure that you want to delete{{clickedStudentData.fName}}'s Information?</strong>
+                         </div> 
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="deleteStudent()">Yes</button>
+                             <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                     
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </div>
+    </div>
+    
+   
+
+
+
+
+    
+
+
+</body>
+</html>
